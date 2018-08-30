@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.generator.pro.mapper.GoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.generator.pro.entity.Goods">
+        <id column="id" property="id" />
+        <result column="category_id" property="categoryId" />
+        <result column="goods_name" property="goodsName" />
+        <result column="goods_sub_name" property="goodsSubName" />
+        <result column="goods_image" property="goodsImage" />
+        <result column="price" property="price" />
+        <result column="line_price" property="linePrice" />
+        <result column="goods_detail" property="goodsDetail" />
+        <result column="up_down" property="upDown" />
+        <result column="del" property="del" />
+    </resultMap>
+
+</mapper>

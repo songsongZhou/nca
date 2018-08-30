@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.generator.pro.mapper.GoodsSkuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.generator.pro.entity.GoodsSku">
+        <id column="id" property="id" />
+        <result column="goods_id" property="goodsId" />
+        <result column="sku_name" property="skuName" />
+        <result column="sku_price" property="skuPrice" />
+        <result column="sku_line_price" property="skuLinePrice" />
+        <result column="stock" property="stock" />
+        <result column="sku_code" property="skuCode" />
+        <result column="sku_image" property="skuImage" />
+        <result column="up_down" property="upDown" />
+        <result column="del" property="del" />
+    </resultMap>
+
+</mapper>
