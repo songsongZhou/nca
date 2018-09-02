@@ -122,12 +122,12 @@ public class ManagerService {
     @Transactional
     public ApiResult addOrUpdateGoods(String goodsStr) {
         GoodsVo goodsVo=new Gson().fromJson(goodsStr,GoodsVo.class);
-        Goods goods=goodsVo.getGoods();
+        Goods goods=goodsVo.getGoodsVo().getGoods();
         if(!goods.insertOrUpdate()){
             return ApiResult.failed("操作失败");
         }
-        for (int i = 0; i < goodsVo.getGoodsSkus().size(); i++) {
-            GoodsSku sku=goodsVo.getGoodsSkus().get(i);
+        for (int i = 0; i < goodsVo.getGoodsVo().getGoodsSkus().size(); i++) {
+            GoodsSku sku=goodsVo.getGoodsVo().getGoodsSkus().get(i);
             if(goods.getId()!=null){
                 sku.setGoodsId(goods.getId());
             }

@@ -9,10 +9,7 @@ import com.tobi.nca.manager.services.ManagerService;
 import com.tobi.nca.utils.GoodsVo;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api("后台管理")
 @RestController
@@ -70,6 +67,8 @@ public class ManagerController {
     public ApiResult delCategory(int id){
         return managerService.delCategory(id);
     }
+
+
     //分类管理类
 
 
@@ -80,7 +79,7 @@ public class ManagerController {
     }
 
     @PostMapping("addOrUpdateGoods")
-    public ApiResult addOrUpdateGoods(String goodsVo){
+    public ApiResult addOrUpdateGoods(@RequestBody String goodsVo){
         return managerService.addOrUpdateGoods(goodsVo);
     }
 

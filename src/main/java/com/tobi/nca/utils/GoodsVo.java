@@ -6,22 +6,37 @@ import com.generator.pro.entity.GoodsSku;
 import java.util.List;
 
 public class GoodsVo {
-    private Goods goods;
-    private List<GoodsSku> goodsSkus;
 
-    public Goods getGoods() {
-        return goods;
+    private GoodsVoBean goodsVo;
+
+    public GoodsVoBean getGoodsVo() {
+        return goodsVo;
     }
 
-    public void setGoods(Goods goods) {
-        this.goods = goods;
+    public void setGoodsVo(GoodsVoBean goodsVo) {
+        this.goodsVo = goodsVo;
     }
 
-    public List<GoodsSku> getGoodsSkus() {
-        return goodsSkus;
+    public static class GoodsVoBean {
+        private Goods goods;
+
+        private List<GoodsSku> goodsSkus;
+
+        public Goods getGoods() {
+            return goods;
+        }
+
+        public void setGoods(Goods goods) {
+            this.goods = goods;
+        }
+
+        public List<GoodsSku> getGoodsSkus() {
+            return goodsSkus;
+        }
+
+        public void setGoodsSkus(List<GoodsSku> goodsSkus) {
+            this.goodsSkus = goodsSkus;
+        }
     }
 
-    public void setGoodsSkus(List<GoodsSku> goodsSkus) {
-        this.goodsSkus = goodsSkus;
-    }
 }
