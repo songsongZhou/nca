@@ -23,6 +23,6 @@ public class Swagger2Config {
                         .title("标题：吉安乐宜家api文档")
                         .description("描述：包括 后台管理 和微信商城")
                         .contact(new Contact("周继慧", null, null)).version("版本号:1.0").build())
-                .select().apis(RequestHandlerSelectors.basePackage("com.tobi.nca.manager.controller")).paths(PathSelectors.any()).build();
+                .select().apis(RequestHandlerSelectors.basePackage("com.tobi.nca.api.controller")).paths(PathSelectors.any()).build();
     }
 }

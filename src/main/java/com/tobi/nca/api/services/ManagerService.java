@@ -1,4 +1,4 @@
-package com.tobi.nca.manager.services;
+package com.tobi.nca.api.services;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -10,12 +10,9 @@ import com.generator.pro.entity.Goods;
 import com.generator.pro.entity.GoodsSku;
 import com.generator.pro.entity.User;
 import com.google.gson.Gson;
-import com.sun.corba.se.spi.orbutil.threadpool.WorkQueue;
 import com.tobi.nca.config.ErrorCode;
 import com.tobi.nca.utils.GoodsVo;
 import com.tobi.nca.utils.KeyTools;
-import freemarker.template.utility.StringUtil;
-import org.apache.velocity.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
