@@ -17,6 +17,16 @@ public class WeiXinController {
 
     @Autowired
     private WeiXinService weiXinService;
+
+    //用户
+    @PostMapping("/login")
+    public ApiResult login(String username,String password){
+        return weiXinService.login(username,password);
+    }
+
+    //用户
+
+
     //首页
 
 
@@ -25,6 +35,7 @@ public class WeiXinController {
     public ApiResult getCategorys(){
         return weiXinService.getCategorys();
     }
+
     @PostMapping("/getGoodsByCId")
     public IPage getGoodsByCId(int cId,int current){
         return weiXinService.getGoodsByCId(cId,current);
@@ -52,4 +63,13 @@ public class WeiXinController {
         return weiXinService.editCart(carts);
     }
     //购物车
+
+    //商品
+
+    @PostMapping("/getGoodsDetail")
+    public ApiResult getGoodsDetail(int gId){
+        return weiXinService.getGoodsDetail(gId);
+    }
+
+    //商品
 }

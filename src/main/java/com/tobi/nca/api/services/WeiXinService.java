@@ -7,20 +7,30 @@ import com.baomidou.mybatisplus.extension.api.ApiResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.generator.pro.entity.Category;
 import com.generator.pro.entity.Goods;
+import com.generator.pro.entity.GoodsSku;
 import com.generator.pro.entity.ShopCart;
 import com.google.gson.Gson;
 import com.tobi.nca.config.ErrorCode;
-import com.tobi.nca.utils.GoodsVo;
 import com.tobi.nca.utils.PageConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class WeiXinService {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    public ApiResult login(String username, String password) {
+        return ApiResult.failed("登录失败");
+    }
 
     public ApiResult getCategorys() {
         List<Category> category=new Category().selectAll();
@@ -38,9 +48,11 @@ public class WeiXinService {
 
     public ApiResult getCartById(int userId) {
         QueryWrapper qw=new QueryWrapper();
-        qw.eq("user_id",userId);
-        List<ShopCart> carts=new ShopCart().selectList(qw);
-        return ApiResult.ok(carts);
+        String sql="SELECT cart.id,cart.num,sku.id skuId,sku.sku_name skuName,sku.sku_price skuPrice," +
+                "sku.sku_image skuImage FROM shop_cart cart,goods_sku sku " +
+                "where cart.user_id="+userId+" and cart.sku_id=sku.id";
+
+        return ApiResult.ok(jdbcTemplate.queryForList(sql));
     }
 
     public ApiResult addCart(int userId, ShopCart cart) {
@@ -78,5 +90,22 @@ public class WeiXinService {
             cart.updateById();
         }
         return ApiResult.failed("修改失败");
+    }
+
+
+    public ApiResult getGoodsDetail(int gId) {
+        ApiAssert.notNull(ErrorCode.EMPTY,gId);
+        Goods goods=new Goods().selectById(gId);
+        if(goods==null){
+            return ApiResult.failed("商品不存在");
+        }
+        QueryWrapper qw=new QueryWrapper();
+        qw.eq("goods_id",gId);
+        qw.eq("del",1);
+        List<GoodsSku> goodsSkus=new GoodsSku().selectList(qw);
+        Map map=new HashMap();
+        map.put("goods",goods);
+        map.put("goodsSku",goodsSkus);
+        return ApiResult.ok(map);
     }
 }
