@@ -5,14 +5,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.ApiAssert;
 import com.baomidou.mybatisplus.extension.api.ApiResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.generator.pro.entity.Category;
-import com.generator.pro.entity.Goods;
-import com.generator.pro.entity.GoodsSku;
-import com.generator.pro.entity.User;
+import com.generator.pro.entity.*;
 import com.google.gson.Gson;
 import com.tobi.nca.config.ErrorCode;
 import com.tobi.nca.utils.GoodsVo;
 import com.tobi.nca.utils.KeyTools;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +19,9 @@ import java.time.LocalDateTime;
 
 @Service
 public class ManagerService {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public ApiResult login(String loginName, String password) {
         ApiAssert.notNull(ErrorCode.EMPTY, loginName, password);
@@ -133,4 +135,36 @@ public class ManagerService {
 
         return ApiResult.ok("操作成功");
     }
+
+    public ApiResult addModule(Module module) {
+        ApiAssert.notNull(ErrorCode.EMPTY,module);
+        if(module.getId()==null){
+            module.setCreateTime(LocalDateTime.now());
+        }
+        if(module.insertOrUpdate()){
+            return ApiResult.ok("成功");
+        }
+        return ApiResult.failed("操作失败");
+    }
+
+    public ApiResult addGoods2Module(ModuleGoods moduleGoods) {
+        ApiAssert.notNull(ErrorCode.EMPTY,moduleGoods);
+        QueryWrapper qw=new QueryWrapper();
+        qw.eq("module_id",moduleGoods.getModuleId());
+        qw.eq("goods_id",moduleGoods.getGoodsId());
+        ModuleGoods moduleGoods1=new ModuleGoods().selectOne(qw);
+        if(moduleGoods1!=null){
+            return ApiResult.failed("该活动商品已存在");
+        }
+
+        if(moduleGoods.getId()==null){
+            moduleGoods.setCreateTime(LocalDateTime.now());
+        }
+        if(moduleGoods.insertOrUpdate()){
+            return ApiResult.ok("成功");
+        }
+        return ApiResult.failed("操作失败");
+
+    }
+
 }

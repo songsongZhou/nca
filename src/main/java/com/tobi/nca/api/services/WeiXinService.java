@@ -5,31 +5,100 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.ApiAssert;
 import com.baomidou.mybatisplus.extension.api.ApiResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.generator.pro.entity.Category;
-import com.generator.pro.entity.Goods;
-import com.generator.pro.entity.GoodsSku;
-import com.generator.pro.entity.ShopCart;
+import com.generator.pro.entity.*;
 import com.google.gson.Gson;
 import com.tobi.nca.config.ErrorCode;
+import com.tobi.nca.utils.KeyTools;
 import com.tobi.nca.utils.PageConfig;
+import com.tobi.nca.utils.weixin.AccessTokenUtil;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class WeiXinService {
 
+    private static final String APP_ID="wx3341de2d2e80d241";
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public ApiResult shareSignature(String url) {
+        //获取签名signature
+        String noncestr = UUID.randomUUID().toString();
+        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+        String signature=AccessTokenUtil.getSignature(noncestr,timestamp,url);
+
+        Map<String,Object> map=new HashMap<>();
+        map.put("appId",APP_ID);
+        map.put("timestamp",timestamp);
+        map.put("nonceStr",noncestr);
+        map.put("signature",signature);
+
+        System.out.println("appId>>"+APP_ID);
+        System.out.println("timestamp>>"+timestamp);
+        System.out.println("nonceStr>>"+noncestr);
+        System.out.println("signature>>"+signature);
+        return ApiResult.ok(map);
+    }
+
     public ApiResult login(String username, String password) {
-        return ApiResult.failed("登录失败");
+        ApiAssert.notNull(ErrorCode.EMPTY, username, password);
+        QueryWrapper qw = new QueryWrapper();
+        qw.eq("user_name", username);
+        Customer user = new Customer().selectOne(qw);
+
+        if (user == null) {
+            return ApiResult.failed("该用户没有注册");
+        }
+
+        if(user.getDel()==0){
+            return ApiResult.failed("用户账号已停用");
+        }
+
+        if (user.getPassword().equals(KeyTools.MD5(password))) {
+            return ApiResult.ok(user);
+        }
+        return ApiResult.failed("密码错误");
+    }
+
+    public ApiResult getUserById(int userId){
+        ApiAssert.notNull(ErrorCode.EMPTY, userId);
+
+        Customer user = new Customer().selectById();
+        return ApiResult.ok(user);
+    }
+
+    public ApiResult getBanner(){
+        QueryWrapper qw=new QueryWrapper();
+        List<Banner> banners=new Banner().selectList(qw);
+        return ApiResult.ok(banners);
+    }
+
+    public ApiResult getModuleGoods() {
+        QueryWrapper qw=new QueryWrapper();
+        qw.eq("status",1);
+        List<Module> module=new Module().selectList(qw);
+        if(module.size()<=0){
+            return ApiResult.failed("没有活动");
+        }
+
+
+        List<Map> list=new ArrayList<>();
+        for (int i = 0; i < module.size(); i++) {
+            Map map=new HashMap();
+            String sql="SELECT g.id,g.goods_name goodsName,g.goods_image goodsImage,g.price FROM goods g left join" +
+                    " module_goods m on g.id=m.goods_id where m.module_id="+module.get(i).getId();
+            map.put("module",module.get(i));
+            map.put("goods",jdbcTemplate.queryForList(sql));
+            list.add(map);
+        }
+        return ApiResult.ok(list);
     }
 
     public ApiResult getCategorys() {
@@ -108,4 +177,6 @@ public class WeiXinService {
         map.put("goodsSku",goodsSkus);
         return ApiResult.ok(map);
     }
+
+
 }

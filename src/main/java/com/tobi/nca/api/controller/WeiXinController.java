@@ -18,17 +18,37 @@ public class WeiXinController {
     @Autowired
     private WeiXinService weiXinService;
 
+
+    @PostMapping("/shareSignature")
+    public ApiResult shareSignature(String url){
+        return weiXinService.shareSignature(url);
+    }
+
     //用户
     @PostMapping("/login")
     public ApiResult login(String username,String password){
         return weiXinService.login(username,password);
     }
 
+    @PostMapping("getUser")
+    public ApiResult getUser(int userId){
+        return weiXinService.getUserById(userId);
+    }
+
+
     //用户
 
 
     //首页
+    @GetMapping("/getBanner")
+    public ApiResult getBanner(){
+        return weiXinService.getBanner();
+    }
 
+    @GetMapping("/getModuleGoods")
+    public ApiResult getModuleGoods(){
+        return weiXinService.getModuleGoods();
+    }
 
     //分类
     @GetMapping("/getCategorys")
@@ -72,4 +92,7 @@ public class WeiXinController {
     }
 
     //商品
+
+
+
 }

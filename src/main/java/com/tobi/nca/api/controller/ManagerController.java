@@ -2,9 +2,7 @@ package com.tobi.nca.api.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.ApiResult;
-import com.generator.pro.entity.Category;
-import com.generator.pro.entity.Goods;
-import com.generator.pro.entity.User;
+import com.generator.pro.entity.*;
 import com.tobi.nca.api.services.ManagerService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,5 +81,19 @@ public class ManagerController {
     }
 
     //商品管理
+
+
+
+    // 微信模块
+    @PostMapping("addModule")
+    public ApiResult addModule(Module module){
+        return managerService.addModule(module);
+    }
+
+    @PostMapping("addGoods2Module")
+    public ApiResult addGoods2Module(ModuleGoods moduleGoods){
+        return managerService.addGoods2Module(moduleGoods);
+    }
+    // 微信模块
 
 }

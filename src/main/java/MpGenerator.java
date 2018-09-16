@@ -23,7 +23,7 @@ public class MpGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("D:\\myjob\\nca-project\\server\\src\\main\\java");
+        gc.setOutputDir("/Users/zhoujihui/IdeaProjects/nca-project/nca/src/main/java");
         gc.setFileOverride(true);
         gc.setActiveRecord(true);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
