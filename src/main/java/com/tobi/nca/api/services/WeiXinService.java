@@ -47,10 +47,10 @@ public class WeiXinService {
         return ApiResult.ok(map);
     }
 
-    public ApiResult login(String username, String password) {
-        ApiAssert.notNull(ErrorCode.EMPTY, username, password);
+    public ApiResult login(String userName, String password) {
+        ApiAssert.notNull(ErrorCode.EMPTY, userName, password);
         QueryWrapper qw = new QueryWrapper();
-        qw.eq("user_name", username);
+        qw.eq("user_name", userName);
         Customer user = new Customer().selectOne(qw);
 
         if (user == null) {
@@ -65,6 +65,22 @@ public class WeiXinService {
             return ApiResult.ok(user);
         }
         return ApiResult.failed("密码错误");
+    }
+
+    public ApiResult register(Customer customer) {
+        ApiAssert.notNull(ErrorCode.EMPTY, customer);
+        QueryWrapper qw=new QueryWrapper();
+        qw.eq("user_name",customer.getUserName());
+        Customer customer1=new Customer().selectOne(qw);
+        if(customer1!=null){
+            return ApiResult.failed("该用户名已被注册,是否去登录");
+        }
+
+        customer.setCreateTime(LocalDateTime.now());
+        if(customer.insert()){
+            return ApiResult.ok(customer);
+        }
+        return ApiResult.failed("注册失败，请稍后重试");
     }
 
     public ApiResult getUserById(int userId){
@@ -177,6 +193,7 @@ public class WeiXinService {
         map.put("goodsSku",goodsSkus);
         return ApiResult.ok(map);
     }
+
 
 
 }

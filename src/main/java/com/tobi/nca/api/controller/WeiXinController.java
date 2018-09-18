@@ -2,6 +2,7 @@ package com.tobi.nca.api.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.ApiResult;
+import com.generator.pro.entity.Customer;
 import com.generator.pro.entity.ShopCart;
 import com.tobi.nca.api.services.WeiXinService;
 import io.swagger.annotations.Api;
@@ -26,8 +27,13 @@ public class WeiXinController {
 
     //用户
     @PostMapping("/login")
-    public ApiResult login(String username,String password){
-        return weiXinService.login(username,password);
+    public ApiResult login(String userName,String password){
+        return weiXinService.login(userName,password);
+    }
+
+    @PostMapping("/register")
+    public ApiResult register(Customer customer){
+        return weiXinService.register(customer);
     }
 
     @PostMapping("getUser")
