@@ -10,11 +10,13 @@ import com.google.gson.Gson;
 import com.tobi.nca.config.ErrorCode;
 import com.tobi.nca.utils.GoodsVo;
 import com.tobi.nca.utils.KeyTools;
+import com.tobi.nca.utils.cos.FileUpload2COS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.LocalDateTime;
 
 @Service
@@ -136,6 +138,11 @@ public class ManagerService {
         return ApiResult.ok("操作成功");
     }
 
+    public IPage<Customer> getCustomer(int current) {
+        ApiAssert.notNull(ErrorCode.EMPTY, current);
+        return new Customer().selectPage(new Page<>(current, 12), null);
+    }
+
     public ApiResult addModule(Module module) {
         ApiAssert.notNull(ErrorCode.EMPTY,module);
         if(module.getId()==null){
@@ -167,4 +174,9 @@ public class ManagerService {
 
     }
 
+    public ApiResult uploadImage(String file) {
+        ApiAssert.notNull(ErrorCode.EMPTY,file);
+//        return ApiResult.ok(FileUpload2COS.uploadImage(file));
+        return ApiResult.ok(file);
+    }
 }

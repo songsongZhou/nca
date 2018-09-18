@@ -8,9 +8,11 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+
 @Api("后台管理")
 @RestController
-//@CrossOrigin
+@CrossOrigin
 public class ManagerController {
 
     @Autowired
@@ -80,11 +82,17 @@ public class ManagerController {
         return managerService.addOrUpdateGoods(goodsVo);
     }
 
+
     //商品管理
 
 
 
     // 微信模块
+    @GetMapping("getCustomer")
+    public IPage<Customer> getCustomer(int current) {
+        return managerService.getCustomer(current);
+    }
+
     @PostMapping("addModule")
     public ApiResult addModule(Module module){
         return managerService.addModule(module);
@@ -95,5 +103,11 @@ public class ManagerController {
         return managerService.addGoods2Module(moduleGoods);
     }
     // 微信模块
+
+
+    @PostMapping("uploadImage")
+    public ApiResult uploadImage(String file){
+        return managerService.uploadImage(file);
+    }
 
 }
