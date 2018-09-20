@@ -7,8 +7,10 @@ import com.tobi.nca.api.services.ManagerService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 @Api("后台管理")
 @RestController
@@ -106,7 +108,7 @@ public class ManagerController {
 
 
     @PostMapping("uploadImage")
-    public ApiResult uploadImage(String file){
+    public ApiResult uploadImage(MultipartFile file)throws Exception{
         return managerService.uploadImage(file);
     }
 
