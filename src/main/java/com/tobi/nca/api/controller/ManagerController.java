@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-
 @Api("后台管理")
 @RestController
 @CrossOrigin
@@ -95,6 +92,16 @@ public class ManagerController {
         return managerService.getCustomer(current);
     }
 
+    @GetMapping("getModule")
+    public ApiResult getModule(){
+        return managerService.getModule();
+    }
+
+    @PostMapping("getModuleGoods")
+    public ApiResult getModuleGoods(int moduleId){
+        return managerService.getModuleGoods(moduleId);
+    }
+
     @PostMapping("addModule")
     public ApiResult addModule(Module module){
         return managerService.addModule(module);
@@ -104,7 +111,14 @@ public class ManagerController {
     public ApiResult addGoods2Module(ModuleGoods moduleGoods){
         return managerService.addGoods2Module(moduleGoods);
     }
+
+    @GetMapping("getBanner")
+    public ApiResult getBanner(){
+        return managerService.getBanner();
+    }
+
     // 微信模块
+
 
 
     @PostMapping("uploadImage")

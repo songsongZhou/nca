@@ -2,6 +2,7 @@ package com.tobi.nca.api.services;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.extension.api.ApiAssert;
 import com.baomidou.mybatisplus.extension.api.ApiResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -11,6 +12,7 @@ import com.tobi.nca.config.ErrorCode;
 import com.tobi.nca.utils.GoodsVo;
 import com.tobi.nca.utils.KeyTools;
 import com.tobi.nca.utils.cos.FileUpload2COS;
+import io.swagger.annotations.Api;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -26,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ManagerService {
@@ -55,7 +58,7 @@ public class ManagerService {
 
     public ApiResult addOrUpdateUser(User user) {
 
-        if (user.getId() == null) {
+        if (user.getId() == 0) {
             QueryWrapper qw = new QueryWrapper();
             qw.eq("user_name", user.getUserName());
             User oldUser = new User().selectOne(qw);
@@ -151,9 +154,33 @@ public class ManagerService {
         return new Customer().selectPage(new Page<>(current, 12), null);
     }
 
+    public ApiResult getModule() {
+        List<Module> module=new Module().selectAll();
+       return ApiResult.ok(module);
+    }
+
+    public ApiResult getModuleGoods(int moduleId) {
+        ApiAssert.notNull(ErrorCode.EMPTY, moduleId);
+        QueryWrapper qw=new QueryWrapper();
+        qw.eq("module_id",moduleId);
+        List<ModuleGoods> moduleGoods=new ModuleGoods().selectList(qw);
+        if(moduleGoods.size()<=0){
+            return ApiResult.ok("该活动没有商品，请到商品列表添加");
+        }
+        String goodsIds="";
+        for (int i = 0; i < moduleGoods.size(); i++) {
+            goodsIds=moduleGoods.get(i).getGoodsId()+",";
+        }
+
+        QueryWrapper queryWrapper=new QueryWrapper();
+        queryWrapper.in("id",goodsIds);
+        List<Goods> goods=new Goods().selectList(queryWrapper);
+        return ApiResult.ok(goods);
+    }
+
     public ApiResult addModule(Module module) {
         ApiAssert.notNull(ErrorCode.EMPTY, module);
-        if (module.getId() == null) {
+        if (module.getId() == 0) {
             module.setCreateTime(LocalDateTime.now());
         }
         if (module.insertOrUpdate()) {
@@ -211,5 +238,8 @@ public class ManagerService {
         }
     }
 
-
+    public ApiResult getBanner() {
+        List<Banner> banner=new Banner().selectAll();
+        return ApiResult.ok(banner);
+    }
 }
