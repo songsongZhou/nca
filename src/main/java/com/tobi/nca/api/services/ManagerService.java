@@ -219,7 +219,7 @@ public class ManagerService {
             f=new File(file.getOriginalFilename());
             inputStreamToFile(ins, f);
         }
-        return ApiResult.ok( FileUpload2COS.uploadImage(f));
+        return ApiResult.ok(FileUpload2COS.uploadImage(f));
     }
 
 
@@ -242,4 +242,23 @@ public class ManagerService {
         List<Banner> banner=new Banner().selectAll();
         return ApiResult.ok(banner);
     }
+
+    public ApiResult addBanner(Banner banner) {
+        ApiAssert.notNull(ErrorCode.EMPTY, banner);
+        if(banner.insert()){
+            return ApiResult.ok("新增banner成功");
+        }
+        return ApiResult.failed("新增失败");
+    }
+
+
+    public ApiResult delImages(String images) {
+        ApiAssert.notNull(ErrorCode.EMPTY, images);
+        String[] urlArr=images.split(",");
+        for (int i = 0; i < urlArr.length; i++) {
+            FileUpload2COS.delImage(urlArr[i]);
+        }
+        return ApiResult.ok("图片成功删除");
+    }
+
 }

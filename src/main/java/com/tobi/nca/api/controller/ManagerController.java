@@ -117,6 +117,11 @@ public class ManagerController {
         return managerService.getBanner();
     }
 
+    @PostMapping("addBanner")
+    public ApiResult addBanner(Banner banner){
+        return managerService.addBanner(banner);
+    }
+
     // 微信模块
 
 
@@ -126,4 +131,8 @@ public class ManagerController {
         return managerService.uploadImage(file);
     }
 
+    @PostMapping("delImages")
+    public ApiResult uploadImage(String images){
+        return managerService.delImages(images);
+    }
 }
