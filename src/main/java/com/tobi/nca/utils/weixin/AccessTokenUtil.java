@@ -18,16 +18,14 @@ import java.util.UUID;
  */
 public class AccessTokenUtil {
 
-
     public synchronized static String getSignature(String noncestr,String timestamp,String url){
         String str="jsapi_ticket=" +getTicket()+
                 "&noncestr=" +noncestr+
-                "&timestamp=1414587457" +timestamp+
+                "&timestamp=" +timestamp+
                 "&url="+url;
         //sha1加密
         System.out.println("生成签名的字符串："+str);
         String signature = SHA1(str);
-        System.out.println("signature:"+signature);
         return signature;
 
     }

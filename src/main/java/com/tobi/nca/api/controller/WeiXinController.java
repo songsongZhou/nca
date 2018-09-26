@@ -7,14 +7,12 @@ import com.generator.pro.entity.ShopCart;
 import com.tobi.nca.api.services.WeiXinService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api("微信接口")
 @RestController
-@RequestMapping("weixin")
+@RequestMapping("/weixin")
+@CrossOrigin
 public class WeiXinController {
 
     @Autowired
