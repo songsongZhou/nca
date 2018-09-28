@@ -13,9 +13,11 @@ import com.tobi.nca.utils.PageConfig;
 import com.tobi.nca.utils.weixin.AccessTokenUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -23,7 +25,8 @@ import java.util.*;
 @Service
 public class WeiXinService {
 
-    private static final String APP_ID="wx3341de2d2e80d241";
+//    private static final String APP_ID="wx3341de2d2e80d241";
+    private static final String APP_ID="wx78a003d6f4adb104";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -193,7 +196,4 @@ public class WeiXinService {
         map.put("goodsSku",goodsSkus);
         return ApiResult.ok(map);
     }
-
-
-
 }

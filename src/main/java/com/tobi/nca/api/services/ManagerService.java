@@ -2,7 +2,6 @@ package com.tobi.nca.api.services;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import com.baomidou.mybatisplus.extension.api.ApiAssert;
 import com.baomidou.mybatisplus.extension.api.ApiResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -12,15 +11,11 @@ import com.tobi.nca.config.ErrorCode;
 import com.tobi.nca.utils.GoodsVo;
 import com.tobi.nca.utils.KeyTools;
 import com.tobi.nca.utils.cos.FileUpload2COS;
-import io.swagger.annotations.Api;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
 
 import java.io.File;
@@ -32,9 +27,6 @@ import java.util.List;
 
 @Service
 public class ManagerService {
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     public ApiResult login(String loginName, String password) {
         ApiAssert.notNull(ErrorCode.EMPTY, loginName, password);

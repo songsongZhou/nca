@@ -1,0 +1,15 @@
+server:
+  port: 8088
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/tobi_nca?useSSL=false&characterEncoding=utf8
+    username: root
+    password: root
+
+
+WeiXin:
+  appId: wx78a003d6f4adb104
+  appSecret: 23ccb4aa3686113d748ea27cd7c7aefa
+  accessToken: 0
+  lastTime: 0
+  expiresIn: 7200

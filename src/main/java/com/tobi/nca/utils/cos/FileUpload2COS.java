@@ -4,13 +4,10 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
-import com.qcloud.cos.internal.COSDirectSpi;
 import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
 import com.qcloud.cos.region.Region;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Date;
 
 public class FileUpload2COS {
@@ -24,9 +21,8 @@ public class FileUpload2COS {
     public static String uploadImage(File file){
         COSClient cosClient=initCOS();
         // bucket的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
-        String bucketName = BUCKET_NAME;
         String key = "goods-image/"+new Date().getTime() + ".jpg";
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, file);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET_NAME, key, file);
         cosClient.putObject(putObjectRequest);
 
         // 关闭客户端(关闭后台线程)

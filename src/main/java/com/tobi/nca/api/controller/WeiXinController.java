@@ -100,4 +100,9 @@ public class WeiXinController {
 
 
 
+    @GetMapping("config")
+    public ApiResult config(){
+
+        return ApiResult.failed("");
+    }
 }

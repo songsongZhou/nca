@@ -1,14 +1,13 @@
 package com.tobi.nca.utils.weixin;
 
-import net.sf.json.JSONObject;
-
+import com.google.gson.Gson;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Map;
 import java.util.Properties;
-import java.util.UUID;
 
 /**
  * 获取access_token
@@ -34,12 +33,13 @@ public class AccessTokenUtil {
 
         String url="https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" +getAccessToken()
                 +"&type=jsapi";
-        JSONObject jsonObject=httpRequest(url);
-        String ticket=jsonObject.getString("ticket");
+        Map<String,Object> objectMap=httpRequest(url);
+        String ticket= (String) objectMap.get("ticket");
         System.out.println("ticket>>"+ticket);
         return ticket;
 
     }
+
 
     //synchronized static可以防止同时被多实例化
     public synchronized static String getAccessToken() {
@@ -76,10 +76,10 @@ public class AccessTokenUtil {
                 String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="
                         + APPID + "&secret=" + APPSECRET;
                 //发送http请求得到json流
-                JSONObject jobject = httpRequest(url);
+                Map<String,Object> objectMap = httpRequest(url);
                 //从json流中获取access_token
-                String j_access_token = (String) jobject.get("access_token");
-                String j_expires_in = jobject.get("expires_in")+"";
+                String j_access_token = (String) objectMap.get("access_token");
+                String j_expires_in = objectMap.get("expires_in")+"";
 
                 //保存access_token
                 if (j_access_token != null && j_expires_in != null) {
@@ -109,15 +109,13 @@ public class AccessTokenUtil {
     }
 
     // 获取accesstoken
-    public synchronized static JSONObject httpRequest(String requestUrl) {
-        JSONObject jsonObject = null;
+    public synchronized static Map<String,Object> httpRequest(String requestUrl) {
+        Map<String,Object> map=null;
         StringBuffer buffer = new StringBuffer();
         try {
-
             URL url = new URL(requestUrl);
             HttpsURLConnection httpUrlConn = (HttpsURLConnection) url
                     .openConnection();
-
             httpUrlConn.setDoOutput(true);
             httpUrlConn.setDoInput(true);
             httpUrlConn.setUseCaches(false);
@@ -141,15 +139,14 @@ public class AccessTokenUtil {
             inputStreamReader.close();
             // 释放资源
             inputStream.close();
-            inputStream = null;
             httpUrlConn.disconnect();
-            jsonObject = JSONObject.fromObject(buffer.toString());
+            map=new Gson().fromJson(buffer.toString(),Map.class);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return jsonObject;
+        return map;
     }
 
     public static String SHA1(String str) {

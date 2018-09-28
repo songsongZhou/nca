@@ -1,0 +1,14 @@
+server:
+  port: 80
+spring:
+  datasource:
+    url: jdbc:mysql://122.114.182.38:3306/zjh?useSSL=false&characterEncoding=utf8
+    username: root
+    password: 22580
+
+WeiXin:
+  appId: wx3341de2d2e80d241
+  appSecret: 39bbd57eab68ff949f9ea67f26605670
+  accessToken: 0
+  lastTime: 0
+  expiresIn: 7200
