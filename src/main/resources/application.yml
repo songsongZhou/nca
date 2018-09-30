@@ -1,6 +1,12 @@
 spring:
   profiles:
     active: dev
+  thymeleaf:
+      mode: HTML5
+      encoding: utf-8
+      cache: true
+      servlet:
+        content-type: text/html
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
@@ -31,4 +37,17 @@ jpa:
     hibernate:
       hbm2ddl:
         auto: create
+
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+    basedir: target/tomcat
+  ssl:
+    key-store: classpath:static/www.shuobakeji.com.jks
+    key-password: 7lBW92V6F8
+    key-store-type: JKS
+    key-alias: server
+http:
+  port: 80
 
